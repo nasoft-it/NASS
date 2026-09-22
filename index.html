@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NASS</title>
+  <meta name="description" content="NASS – search the web from a clean, fast browser-style start page.">
+  <meta name="theme-color" content="#F6F6FB">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Icon sprite (inline so there are no extra requests) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-forward" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="18.5" r="1.8" fill="currentColor"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.4v.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 11v5.5M12 7.6v.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-tab" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 10h16" stroke="currentColor" stroke-width="2"/></symbol>
+  </defs>
+</svg>
+
+<div class="app" id="app">
+
+  <!-- ============ BROWSER CHROME ============ -->
+  <header class="chrome">
+
+    <!-- Tab strip -->
+    <div class="tabstrip">
+      <button class="brand" id="brandBtn" type="button" aria-label="NASS home">
+        <img src="logo.png" alt="" width="22" height="22">
+        <span>NASS</span>
+      </button>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Open tabs"></div>
+      <button class="icon-btn new-tab" id="newTabBtn" type="button" aria-label="New tab" title="New tab">
+        <svg class="ico"><use href="#i-plus"/></svg>
+      </button>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <button class="icon-btn" id="backBtn" type="button" aria-label="Back" title="Back" disabled><svg class="ico"><use href="#i-back"/></svg></button>
+      <button class="icon-btn" id="forwardBtn" type="button" aria-label="Forward" title="Forward" disabled><svg class="ico"><use href="#i-forward"/></svg></button>
+      <button class="icon-btn hide-sm" id="refreshBtn" type="button" aria-label="Reload" title="Reload"><svg class="ico"><use href="#i-refresh"/></svg></button>
+      <button class="icon-btn hide-sm" id="homeBtn" type="button" aria-label="Home" title="Home"><svg class="ico"><use href="#i-home"/></svg></button>
+
+      <form class="omnibox" id="omniForm" role="search" autocomplete="off">
+        <svg class="ico omni-icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <label class="sr-only" for="omniInput">Search NASS or type a web address</label>
+        <input id="omniInput" type="text" inputmode="search" enterkeyhint="search"
+               placeholder="Search NASS or type a web address" spellcheck="false"
+               autocapitalize="off" autocorrect="off">
+        <button class="omni-clear" id="omniClear" type="button" aria-label="Clear" hidden>
+          <svg class="ico"><use href="#i-x"/></svg>
+        </button>
+      </form>
+
+      <div class="menu-wrap">
+        <button class="icon-btn" id="menuBtn" type="button" aria-label="NASS menu" title="Menu"
+                aria-haspopup="menu" aria-expanded="false" aria-controls="menu">
+          <svg class="ico"><use href="#i-menu"/></svg>
+        </button>
+
+        <div class="menu" id="menu" role="menu" aria-label="NASS menu" hidden>
+          <button class="menu-item" role="menuitem" type="button" data-action="new-tab"><svg class="ico"><use href="#i-tab"/></svg>New tab</button>
+          <button class="menu-item" role="menuitem" type="button" data-action="home"><svg class="ico"><use href="#i-home"/></svg>Home</button>
+          <button class="menu-item" role="menuitem" type="button" data-action="reload"><svg class="ico"><use href="#i-refresh"/></svg>Reload</button>
+          <div class="menu-sep" role="separator"></div>
+
+          <div class="menu-group" role="group" aria-labelledby="mg-appearance">
+            <div class="menu-label" id="mg-appearance">Appearance</div>
+            <div class="segmented" id="themeSeg" role="radiogroup" aria-labelledby="mg-appearance">
+              <button type="button" role="radio" aria-checked="false" data-theme-value="light">Light</button>
+              <button type="button" role="radio" aria-checked="false" data-theme-value="dark">Dark</button>
+              <button type="button" role="radio" aria-checked="true"  data-theme-value="auto">Auto</button>
+            </div>
+          </div>
+
+          <div class="menu-group" role="group" aria-labelledby="mg-search">
+            <div class="menu-label" id="mg-search">Search settings</div>
+            <label class="switch-row">
+              <span>Remember recent searches</span>
+              <input type="checkbox" id="rememberToggle" role="switch" checked>
+              <span class="switch" aria-hidden="true"></span>
+            </label>
+            <button class="menu-item" role="menuitem" type="button" data-action="clear-recents" id="clearRecentsBtn">
+              <svg class="ico"><use href="#i-clock"/></svg>Clear recent searches
+            </button>
+          </div>
+
+          <div class="menu-sep" role="separator"></div>
+          <button class="menu-item" role="menuitem" type="button" data-action="about"><svg class="ico"><use href="#i-info"/></svg>About NASS</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress" id="progress" aria-hidden="true"><i></i></div>
+  </header>
+
+  <!-- ============ PAGE AREA ============ -->
+  <main class="page" id="page">
+
+    <!-- Home / new tab -->
+    <section class="home" id="homeView" aria-label="NASS home">
+      <p class="clock" id="clock" aria-live="off"></p>
+
+      <img class="home-logo" src="logo.png" alt="" width="112" height="112">
+      <h1 class="wordmark">NASS</h1>
+
+      <form class="hero-search" id="homeForm" role="search" autocomplete="off">
+        <svg class="ico" aria-hidden="true"><use href="#i-search"/></svg>
+        <label class="sr-only" for="homeInput">Search the web with NASS</label>
+        <input id="homeInput" type="text" inputmode="search" enterkeyhint="search"
+               placeholder="Search the web" spellcheck="false" autocapitalize="off" autocorrect="off">
+        <button class="hero-clear" id="homeClear" type="button" aria-label="Clear" hidden><svg class="ico"><use href="#i-x"/></svg></button>
+        <button class="hero-go" type="submit" aria-label="Search"><svg class="ico"><use href="#i-forward"/></svg></button>
+      </form>
+
+      <nav class="shortcuts" id="shortcuts" aria-label="Sites"></nav>
+
+      <section class="recents" id="recents" aria-label="Recent searches" hidden>
+        <h2>Recent searches</h2>
+        <ul id="recentList"></ul>
+      </section>
+    </section>
+
+    <!-- Results -->
+    <section class="results" id="resultsView" aria-label="Search results" hidden>
+      <div class="results-inner">
+
+        <div class="skeleton" id="skeleton" aria-hidden="true" hidden>
+          <div class="sk-row"><i></i><i></i><i></i></div>
+          <div class="sk-row"><i></i><i></i><i></i></div>
+          <div class="sk-row"><i></i><i></i><i></i></div>
+          <div class="sk-row"><i></i><i></i><i></i></div>
+        </div>
+
+        <div class="state" id="errorState" role="alert" hidden>
+          <svg class="ico state-ico"><use href="#i-alert"/></svg>
+          <h2>Something went wrong</h2>
+          <p>NASS couldn't load results. Check your connection and try again.</p>
+          <button class="btn" id="retryBtn" type="button">Try again</button>
+        </div>
+
+        <div class="state" id="emptyState" hidden>
+          <svg class="ico state-ico"><use href="#i-search"/></svg>
+          <h2>No results for <span id="emptyQuery"></span></h2>
+          <p>Check the spelling or try different, more general keywords.</p>
+        </div>
+
+        <!--
+          Search results container.
+          This is the "results only" element of the SAME Programmable Search Engine
+          (same cx ID, loaded by the <script> at the bottom of this file). NASS's own
+          search bars send the query to it. Links open in a new tab because most sites
+          refuse to be shown inside another page.
+        -->
+        <div id="cseHold" class="cse-hold">
+          <div class="gcse-searchresults-only" data-gname="nass" data-linkTarget="_blank"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- About dialog -->
+<dialog class="about" id="aboutDialog" aria-labelledby="aboutTitle">
+  <img src="logo.png" alt="" width="64" height="64">
+  <h2 id="aboutTitle">NASS</h2>
+  <p>A browser-style search experience. Type a question or a web address in the bar at the top.</p>
+  <p class="muted">NASS does not run its own search index. Results come from an external web search service and open in new tabs.</p>
+  <form method="dialog"><button class="btn" autofocus>Close</button></form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<noscript><p style="padding:24px;font-family:sans-serif">NASS needs JavaScript to run.</p></noscript>
+
+<script src="script.js"></script>
+
+<!-- ========================================================================
+     YOUR GOOGLE PROGRAMMABLE SEARCH ENGINE (from browser_nass.txt)
+     The search engine ID (cx) is unchanged: e088d736f008145cc
+     Keep this tag AFTER script.js so NASS can register its callbacks first.
+     ======================================================================== -->
+<script async src="https://cse.google.com/cse.js?cx=e088d736f008145cc">
+</script>
+</body>
+</html>
